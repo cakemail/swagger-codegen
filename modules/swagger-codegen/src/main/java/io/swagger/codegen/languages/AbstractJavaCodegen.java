@@ -1,6 +1,7 @@
 package io.swagger.codegen.languages;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -779,6 +780,12 @@ public abstract class AbstractJavaCodegen extends DefaultCodegen implements Code
             // needed by all pojos, but not enums
             model.imports.add("ApiModelProperty");
             model.imports.add("ApiModel");
+        }
+        if (model.discriminator != null && additionalProperties.containsKey("jackson") && property.name.equals(model.discriminator)) {
+        	ArrayList<CodegenProperty> newVars = new ArrayList<>(model.vars);
+        	newVars.remove(property);
+        	model.vars = newVars;
+        	model.hasVars = !newVars.isEmpty();
         }
     }
 
